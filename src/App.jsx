@@ -88,14 +88,12 @@ const [ totalAgility, setAgility] =  useState(0);
 
 
 const addToStrength = (fighter) => {
+  const initialValue = 0;
+  const sumWithInitial = team.reduce((accumulator, currentValue) => {
+    return accumulator + currentValue.strength;
+  }, initialValue);
 
-  const  initialValue = 0;
-  const sumWithInitial = team.reduce((accumlator, currentValue) =>  {
-    console.log(currentValue.strength)
-    accumlator + currentValue,  initialValue 
-  } );
-
-setTotalStrength(sumWithInitial) 
+  setTotalStrength(sumWithInitial);
 }
 
 
@@ -116,7 +114,10 @@ useEffect(() => {
 
 const  handleAddFighter = (zombieFighter)=> {
   if(money < zombieFighter.price)
-  {
+  
+    {
+      alert('Not enough money')
+      
   }else{
     const teamArray =  [...team];
     teamArray.push(zombieFighter);
@@ -135,9 +136,24 @@ setMoney(newTotal)
   }
 }
 
+const DeletehandleAddFighter = (zombieFighter) => {
+  const teamArray = [...team];
+  const index = teamArray.indexOf(zombieFighter);
+  teamArray.splice(index, 1);
+  setTeam(teamArray);
+
+  addToStrength(zombieFighter);
+  addToAgility(zombieFighter);
+
+  const newTotal = money + zombieFighter.price
+  setMoney(newTotal)
+}
+
+
+
 return  (
   <>
- <h1>Hello world!</h1>
+ <h1>CHOOSE YOUR FIGHTER</h1>
 
 
 
@@ -169,6 +185,8 @@ return  (
   <li>Agility: { zombieFighters[idx].agility }</li>
   <img src={ zombieFighters[idx].img } />
   <button onClick={() => handleAddFighter(zombieFighters[idx])}>Add</button>
+  <button onClick={() => DeletehandleAddFighter(zombieFighters[idx])}>delete</button>
+
   </div>
   ))}
   </ul>
